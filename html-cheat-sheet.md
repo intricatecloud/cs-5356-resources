@@ -25,7 +25,7 @@ this should be on its own row, but it shows up next to the above text
 </div>
 ```
 
-Divs nested under other divs can create nested columns (using Flexbox)
+Divs nested under other divs can create nested columns (using Flexbox) (example in JSX)
 ```jsx
 <div style={{display: 'flex', flexDirection: 'row'}}>
     <div>this is a nested column 1</div>
