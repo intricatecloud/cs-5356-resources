@@ -1,3 +1,5 @@
+# Assignment #4
+
 You've deployed your frontend, you've deployed your backend. Now it's time to make them useful.
 
 This assignment is 3 steps:
@@ -22,7 +24,7 @@ This assignment is 3 steps:
 
 For example:
 
-```jsx
+```sh
 GET /orders
 
 example response:
@@ -36,7 +38,7 @@ example response:
 
 POST /orders
 
-expected body: 
+expected body:
 {
   menuItems: [{name: 'fried chicken', quantity: 2}]
 }
@@ -68,7 +70,7 @@ Now that you've defined your API - make it real. Create your first actual GET AP
 
 At this step, you should be able to make a request to your API and verify that its returning the right data with the `curl` command. For example:
 
-```jsx
+```sh
 > curl http://localhost:4000/dev/orders
 {
   id: 'order-id',
@@ -83,20 +85,20 @@ Some notes:
 - If you're using serverless with flask or express, you can develop your APIs with those tools.
 - If you're using serverless with only a handler.js file AND the Lambda Proxy integration, create your API by checking for `event.httpMethod` & `event.path` and returning a response
 
-```jsx
+```js
 module.exports.hello = async (event) => {
   if (event.httpMethod === 'GET' && event.path === '/feed') {
     return {
-			statusCode: 200,
-			body: JSON.stringify([{username: 'da335', message: 'building stuff is cool'}])
-	  }
-	}
+      statusCode: 200,
+      body: JSON.stringify([{username: 'da335', message: 'building stuff is cool'}])
+    }
+  }
 }
 ```
 
 - If you're using serverless with different paths defined in your serverless.yml, you can define your API there as well
 
-```jsx
+```yml
 # serverless.yml
 functions:
   feedApi:
@@ -105,13 +107,14 @@ functions:
       - http:
         path: /feed
         method: GET
-
+```
+```js
 # handler.js
 module.exports.feed = async (event) => {
   // You'll only receive events for GET /feed requests
   return {
-		statusCode: 200,
-		body: JSON.stringify([{username: 'da335', message: 'building stuff is cool'}])
+    statusCode: 200,
+    body: JSON.stringify([{username: 'da335', message: 'building stuff is cool'}])
   }
 }
 ```
@@ -120,7 +123,7 @@ module.exports.feed = async (event) => {
 
 Edit your frontend to use your API:
 
-Create the first feature that will use the API that you defined and add it to the page thats shown AFTER the user logs in. 
+Create the first feature that will use the API that you defined and add it to the page thats shown AFTER the user logs in.
 
 - Show the users feed by making a GET /feed request to your backend API, and showing a "card" for each item in the feed (see [bulma's cards](https://bulma.io/documentation/components/card/))
 - Show available restaurants by making a GET /restaurants request to your backend API, and showing a Restaurant item
@@ -131,19 +134,19 @@ When making the request to your backend API
 - you can use `fetch` which is available natively in the browser to make a request - see the [MDN fetch docs](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) for how to use it.
 - Parse the response as json by calling `response.json()`, and save the result to your components state
 
-```jsx
+```js
 class Orders extends React.Component {
-	state = {
+  state = {
     orders: null
   }
 
-	async componentDidMount() {
-		const response = await fetch('http://localhost:4000/dev/orders')
-		const orders = await response.json()
-		// save it to your components state so you can use it during render
-		this.setState({orders: orders})
-		console.log(orders)
-	}
+  async componentDidMount() {
+    const response = await fetch('http://localhost:4000/dev/orders')
+    const orders = await response.json()
+    // save it to your components state so you can use it during render
+    this.setState({orders: orders})
+    console.log(orders)
+  }
   ...
 }
 ```
@@ -153,22 +156,22 @@ When displaying the data from your backend, you can save the data to your compon
 ```jsx
 render() {
   return (
-		<div>
+    <div>
       <div className="title">My Orders</div>
       <ul>
-			{ 
-			  this.state.orders && this.state.orders.map(order => {
-	        return (
-						<li>
-							<div>Order ID: {order.id}</div>
+      {
+        this.state.orders && this.state.orders.map(order => {
+          return (
+            <li>
+              <div>Order ID: {order.id}</div>
               <div>Order status: {order.status}</div>
-						</li>
-					)
+            </li>
+          )
         })
-			}
-			</ul>
-		</div>
-	)
+      }
+      </ul>
+    </div>
+  )
 }
 ```
 
@@ -182,26 +185,26 @@ Submit a screenshot of your frontend at this step.
 
 On the front-end, add the users ID token to the request to your backend. You might edit the code from above to look like this:
 
-```jsx
+```js
 class Orders extends React.Component {
-	state = {
+  state = {
     orders: null
   }
-	
-  async componentDidMount()	
+
+  async componentDidMount()
     const idToken = await firebase.auth().currentuser?.getIdToken()
-    const response = await fetch('http://localhost:4000/dev/orders', { 
-	    headers: { 
-			 'Authorization': idToken
+    const response = await fetch('http://localhost:4000/dev/orders', {
+      headers: {
+        'Authorization': idToken
       }
-		})
-		if (response.status === 401) {
-		  return console.log('unauthorized')
-		}
-		const orders = await response.json()
-		// save it to your components state so you can use it during render
-		this.setState({orders: orders})
-		console.log(orders)
+    })
+    if (response.status === 401) {
+      return console.log('unauthorized')
+    }
+    const orders = await response.json()
+    // save it to your components state so you can use it during render
+    this.setState({orders: orders})
+    console.log(orders)
   }
   ...
 }
@@ -214,17 +217,17 @@ On the backend, your handler should check the request for a header named "Author
 - If you're using JS, you can use the npm package [firebase-token-verifier](https://www.npmjs.com/package/firebase-token-verifier) to verify the token so install it `npm install --save firebase-token-verifier`. Take a look at the README for how to include it in your project. There's also an example below.
 - If you're using python, you can use the google-auth pip package to verify firebase ID tokens - see [install step here](https://googleapis.dev/python/google-auth/1.9.0/index.html) and the [docs for the method here](https://googleapis.dev/python/google-auth/1.9.0/reference/google.oauth2.id_token.html#google.oauth2.id_token.verify_firebase_token). Here's an example of what it looks like.
 
-    ```jsx
-    from google.oauth2 import id_token
-    from google.auth.transport import requests
-    request = requests.Request()
+```python
+from google.oauth2 import id_token
+from google.auth.transport import requests
+request = requests.Request()
 
-    # token would come from the header
-    id_info = id_token.verify_firebase_token(token, request)
+# token would come from the header
+id_info = id_token.verify_firebase_token(token, request)
 
-    userid = id_info['sub']
-    print(userid)
-    ```
+userid = id_info['sub']
+print(userid)
+```
 
 - Your API should return a status code 401 if no token is included in the request
 - Your API should return a status code 401 if the token is not validated successfully
@@ -232,7 +235,7 @@ On the backend, your handler should check the request for a header named "Author
 
 Your implementation might look something like this in JS:
 
-```jsx
+```js
 const projectId = 'firebase-project-id'
 if (event.path === '/feed' && event.httpMethod === 'GET') {
     // check the header named Authorization
@@ -248,7 +251,7 @@ if (event.path === '/feed' && event.httpMethod === 'GET') {
       // validate the token from the request
       const decoded = await firebaseTokenVerifier.validate(token, projectId)
     } catch (err) {
-      // the token was invalid, 
+      // the token was invalid,
       console.error(err)
       return {
         statusCode: 401
@@ -268,7 +271,7 @@ if (event.path === '/feed' && event.httpMethod === 'GET') {
   }
 ```
 
-The only way to test this change to your API is to log in via your frontend and sign-in. 
+The only way to test this change to your API is to log in via your frontend and sign-in.
 
 - If you receive a 401 - double check if theres an error in your API by checking the console output. Make sure you're running `serverless offline --httpPort 4000 --printOutput` - note the `--printOutput` option which tells the serverless command to show the console logs of your function.
 
@@ -276,7 +279,7 @@ Commit your changes to your frontend and backend, and push it to Github. And inc
 
 Once this works locally, you'll see the data on the page as you did at the end of Part 2/3.
 
-When your project gets deployed by Amplify, you might see errors about CORS (Missing Access-Control-Allow-Origin Header) depending on your serverless.yml set up. I'll talk more about this next class - but if you run into it, thats ok. This is the first example of an issue that you won't run into in development, but will run into in production. 
+When your project gets deployed by Amplify, you might see errors about CORS (Missing Access-Control-Allow-Origin Header) depending on your serverless.yml set up. I'll talk more about this next class - but if you run into it, thats ok. This is the first example of an issue that you won't run into in development, but will run into in production.
 
 If you run into issues or need help, please don't hesitate to pop into the #2021-cs-5356-support Slack channel and ask a question or two. Its better than banging your head against the wall for hours!
 
