@@ -1,7 +1,5 @@
 # Lesson 5
 
-[DynamoDB Data Model Cheat Sheets](https://www.notion.so/DynamoDB-Data-Model-Cheat-Sheets-75898a9671d04c38aedecc139ae6b8f6)
-
 ## Mid-term checkpoint
 
 You'll be relieved to know this week is the last programming assignment, and maybe the hardest part of it. It's also only worth 2 points, so don't sweat it if you can't figure it out.
