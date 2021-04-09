@@ -73,15 +73,15 @@ And since you can sprinkle these if conditions just about anywhere, you can do o
 const isLocalEnvironment = window.location.href.includes('localhost')
 
 class App extends React.Component {
-	render() {
-		return (
-			<div>
-				<h1>Twitter for Puppies</h1>
+    render() {
+        return (
+            <div>
+                <h1>Twitter for Puppies</h1>
 
-				{/* If this is a local environment, show the new feature */}
-				{ isLocalEnvironment && <PuppyPlayDateScheduler /> }
-			</div>
-		)
+                {/* If this is a local environment, show the new feature */}
+                { isLocalEnvironment && <PuppyPlayDateScheduler /> }
+            </div>
+        )
   }
 }
 ```
@@ -177,10 +177,10 @@ If you're not using either of them, check your serverless.yml:
 ```yaml
 handler: handler.hello
     events:
-      - http:
-					# This means you're using the Proxy integration
-          path: /{proxy+}
-          method: ANY
+        - http:
+            # This means you're using the Proxy integration
+            path: /{proxy+}
+            method: ANY
 ```
 
 In your handler function, check for an OPTIONS request, and then send back the expected headers. You will also need to include those headers on EVERY response from your API - so your handler function might look like this:
@@ -191,28 +191,28 @@ const headers = {
 }
 
 module.exports.hello = async (event) => {
-  // check first if its an OPTIONS request
-  if (event.httpMethod === 'OPTIONS') {
-    // return the expected status and CORS headers
-    return {
-      statusCode: 200,
-      headers
+    // check first if its an OPTIONS request
+    if (event.httpMethod === 'OPTIONS') {
+        // return the expected status and CORS headers
+        return {
+            statusCode: 200,
+            headers
+        }
     }
-  }
-	...
-	if (event.path === '/orders' && event.httpMethod === 'GET') {
-		...
-    return {
-      statusCode: 200,
-			// Also include the CORS headers in the response
-      headers,
-      body: JSON.stringify([{
-        orderId: '1',
-        items: [{itemName: 'Fried Chicken', price: '5'}],
-        deliveryAddress: '123 Fake St'
-      }])
+    ...
+    if (event.path === '/orders' && event.httpMethod === 'GET') {
+        ...
+        return {
+            statusCode: 200,
+            // Also include the CORS headers in the response
+            headers,
+            body: JSON.stringify([{
+                orderId: '1',
+                items: [{itemName: 'Fried Chicken', price: '5'}],
+                deliveryAddress: '123 Fake St'
+            }])
+        }
     }
-	}
 }
 ```
 
@@ -220,10 +220,10 @@ module.exports.hello = async (event) => {
 
 ```yaml
 events:
-	- http:
-	  path: /orders
-	  method: GET
-    cors: true
+    - http:
+        path: /orders
+        method: GET
+        cors: true
 ```
 
 **How do you check that it works?**
@@ -319,8 +319,8 @@ What's different between SQL and NoSQL?
 
     ```sql
     create table orders (
-    	id auto_increment primary key,
-    	deliveryAddress varchar(50),
+        id auto_increment primary key,
+        deliveryAddress varchar(50),
       user_key varchar(20),
     )
     ```
@@ -329,30 +329,30 @@ What's different between SQL and NoSQL?
 
     ```json
     {
-        TableName : "Orders",
-        KeySchema: [
+        "TableName": "Orders",
+        "KeySchema": [
             {
-                AttributeName: "userKey",
-                KeyType: "HASH", //Partition key
+                "AttributeName": "userKey",
+                "KeyType": "HASH", //Partition key
             },
             {
-                AttributeName: "orderId",
-                KeyType: "RANGE" //Sort key
+                "AttributeName": "orderId",
+                "KeyType": "RANGE" //Sort key
             }
         ],
-        AttributeDefinitions: [
+        "AttributeDefinitions": [
             {
-                AttributeName: "userKey",
-                AttributeType: "S"
+                "AttributeName": "userKey",
+                "AttributeType": "S"
             },
             {
-                AttributeName: "orderId",
-                AttributeType: "S"
+                "AttributeName": "orderId",
+                "AttributeType": "S"
             }
         ],
-        ProvisionedThroughput: {
-            ReadCapacityUnits: 1,
-            WriteCapacityUnits: 1
+        "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
         }
     }
     ```
