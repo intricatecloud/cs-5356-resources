@@ -2,6 +2,10 @@
 
 Hi! I'm using this repo to share helpful files and resources to bootstrap your development process
 
+* [Lesson 5](/lesson-5.md)
+* [Lesson 4](/lesson-4.md)
+
+* [DynamoDB Data Model Cheat Sheets](lesson-5-assets/dynamodb-cheat-sheet.md)
 * [HTML Cheat Sheet](/html-cheat-sheet.md)
 * [JS Cheat Sheet](/js-cheat-sheet.md)
 * [React Cheat Sheet](react-cheat-sheet.md)
