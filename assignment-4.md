@@ -192,7 +192,7 @@ class Orders extends React.Component {
   }
 
   async componentDidMount()
-    const idToken = await firebase.auth().currentuser?.getIdToken()
+    const idToken = await firebase.auth().currentUser?.getIdToken()
     const response = await fetch('http://localhost:4000/dev/orders', {
       headers: {
         'Authorization': idToken
